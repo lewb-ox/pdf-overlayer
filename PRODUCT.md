@@ -18,7 +18,7 @@ Apply labelled, semi-transparent colours to rooms, then export the original-scal
 - Compact editor with the PDF as the primary workspace, confirmed by the user.
 - Point-and-click complex polygons, mixed straight and curved segments, and mandatory closed shapes.
 - Editable colour categories with labels and transparency.
-- A legend included in exported PDFs.
+- A reference-style legend included in exported PDFs: bold category headings, rectangular colour swatches, numbered room lists and matching movable room markers. Each page has editable title, subtitle, notes and footer text.
 - System, light and dark interface themes with a remembered user override. System is the default; the PDF page and exported document colours remain unchanged.
 - Preserve source page dimensions, crop boxes, rotation and vector content.
 - User chose direct implementation rather than a visual mockup round.

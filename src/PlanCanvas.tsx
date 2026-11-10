@@ -1,7 +1,8 @@
 import { useEffect, useLayoutEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import type { PDFDocumentProxy } from 'pdfjs-dist';
 import { Layers, LoaderCircle, Move, Upload } from 'lucide-react';
-import { getLegend, legendLayout, moveVertex, pageCategories, pathData, type EditorState, type Overlay, type PageInfo, type Point, type Tool, type Vertex } from './model';
+import { getLegend, legendLayout, moveVertex, pageCategories, pathData, roomNumbers, roomMarkerPosition, type EditorState, type PageInfo, type Point, type Tool, type Vertex } from './model';
+import { LegendGraphic, NumberBadge } from './LegendGraphic';
 
 interface Props {
   pdf: PDFDocumentProxy | null;
@@ -19,12 +20,14 @@ interface Props {
   closingCurve: boolean;
   color: string;
   opacity: number;
+  legendTitle: string;
   onPoint: (point: Point, close: boolean) => void;
   onOpen: () => void;
   onError: (message: string) => void;
 }
 
 type Drag = { type: 'vertex' | 'control'; id: string; index: number; vertices: Vertex[] }
+  | { type: 'label'; id: string; start: Point; point: Point }
   | { type: 'legend'; start: Point; x: number; y: number }
   | { type: 'pan'; x: number; y: number; left: number; top: number };
 
@@ -39,6 +42,8 @@ export function PlanCanvas(props: Props) {
   const drag = useRef<Drag | null>(null);
   const [preview, setPreview] = useState<{ id: string; vertices: Vertex[] } | null>(null);
   const [legendPreview, setLegendPreview] = useState<Point | null>(null);
+  const [labelPreview, setLabelPreview] = useState<{ id: string; point: Point } | null>(null);
+  const [, setFontsReady] = useState(false);
   const didDrag = useRef(false);
   const drawing = tool === 'line' || tool === 'curve';
   const fit = info ? Math.max(0.05, Math.min((bounds.width - 84) / info.width, (bounds.height - 84) / info.height)) : 1;
@@ -53,7 +58,8 @@ export function PlanCanvas(props: Props) {
     return () => observer.disconnect();
   }, []);
   useEffect(() => { onScaleRef.current(scale); }, [scale]);
-  useEffect(() => { setPreview(null); setLegendPreview(null); drag.current = null; }, [page, pdf, tool, state]);
+  useEffect(() => { setPreview(null); setLegendPreview(null); setLabelPreview(null); drag.current = null; }, [page, pdf, tool, state]);
+  useEffect(() => { let active = true; void document.fonts.ready.then(() => { if (active) setFontsReady(true); }); return () => { active = false; }; }, []);
 
   useEffect(() => {
     if (!pdf || !info || !canvasRef.current) return;
@@ -102,8 +108,10 @@ export function PlanCanvas(props: Props) {
       scrollRef.current!.scrollLeft = d.left - (e.clientX - d.x);
       scrollRef.current!.scrollTop = d.top - (e.clientY - d.y);
     } else if (d.type === 'legend') {
-      const layout = legendLayout(info!, pageCategories(state, page));
+      const layout = legendLayout(info!, state, page, props.legendTitle);
       setLegendPreview({ x: Math.max(0, Math.min(info!.width - layout.width, d.x + p.x - d.start.x)), y: Math.max(0, Math.min(info!.height - layout.height, d.y + p.y - d.start.y)) });
+    } else if (d.type === 'label') {
+      setLabelPreview({ id: d.id, point: { x: Math.max(9, Math.min(info!.width - 9, d.point.x + p.x - d.start.x)), y: Math.max(9, Math.min(info!.height - 9, d.point.y + p.y - d.start.y)) } });
     } else {
       const vertices = d.type === 'vertex' ? moveVertex(d.vertices, d.index, p) : d.vertices.map((v, i) => i === d.index ? { ...v, control: p } : v);
       setPreview({ id: d.id, vertices });
@@ -112,14 +120,16 @@ export function PlanCanvas(props: Props) {
   const endDrag = (e: ReactPointerEvent<SVGSVGElement>) => {
     if (!drag.current) return;
     if (preview) props.onCommit({ ...state, overlays: state.overlays.map(o => o.id === preview.id ? { ...o, vertices: preview.vertices } : o) });
-    if (legendPreview && info) props.onCommit({ ...state, legends: { ...state.legends, [page]: { ...getLegend(state, page, info), ...legendPreview } } });
-    drag.current = null; setPreview(null); setLegendPreview(null);
+    if (legendPreview && info) props.onCommit({ ...state, legends: { ...state.legends, [page]: { ...getLegend(state, page, info, props.legendTitle), ...legendPreview } } });
+    if (labelPreview) props.onCommit({ ...state, overlays: state.overlays.map(o => o.id === labelPreview.id ? { ...o, labelPosition: labelPreview.point } : o) });
+    drag.current = null; setPreview(null); setLegendPreview(null); setLabelPreview(null);
     if (e.currentTarget.hasPointerCapture(e.pointerId)) e.currentTarget.releasePointerCapture(e.pointerId);
   };
-  const cancelDrag = () => { drag.current = null; setPreview(null); setLegendPreview(null); didDrag.current = true; };
+  const cancelDrag = () => { drag.current = null; setPreview(null); setLegendPreview(null); setLabelPreview(null); didDrag.current = true; };
   const categories = pageCategories(state, page);
-  const legend = info ? { ...getLegend(state, page, info), ...legendPreview } : null;
-  const layout = info ? legendLayout(info, categories) : null;
+  const legend = info ? { ...getLegend(state, page, info, props.legendTitle), ...legendPreview } : null;
+  const layout = info ? legendLayout(info, state, page, props.legendTitle) : null;
+  const numbers = roomNumbers(state.overlays);
   const chosen = state.overlays.find(o => o.id === selected && o.page === page && !o.hidden);
   const chosenVertices = chosen ? (preview?.id === chosen.id ? preview.vertices : chosen.vertices) : [];
   const ghost = [...draft];
@@ -157,17 +167,20 @@ export function PlanCanvas(props: Props) {
                 <title>{overlay.name} — {category.label}</title>
               </path>;
             })}
+            {state.overlays.filter(o => o.page === page && !o.hidden).map(overlay => {
+              const point = labelPreview?.id === overlay.id ? labelPreview.point : overlay.labelPosition ?? roomMarkerPosition(preview?.id === overlay.id ? preview.vertices : overlay.vertices);
+              const category = state.categories.find(c => c.id === overlay.categoryId)!;
+              return <g key={`number-${overlay.id}`} data-room-number={numbers.get(overlay.id)} className="room-number-marker" style={{ pointerEvents: tool === 'select' ? 'auto' : 'none' }}
+                onClick={e => { e.stopPropagation(); if (!didDrag.current) props.onSelect(overlay.id); didDrag.current = false; }}
+                onPointerDown={e => { props.onSelect(overlay.id); beginDrag(e, { type: 'label', id: overlay.id, point, start: position(e) }); }}>
+                <NumberBadge x={point.x} y={point.y} radius={8.5} number={numbers.get(overlay.id)!} color={category.color}/>
+                <title>{numbers.get(overlay.id)}: {overlay.name}. Drag to move the number.</title>
+              </g>;
+            })}
             {legend?.visible && layout && categories.length > 0 && <g className="plan-legend" data-testid="plan-legend" transform={`translate(${legend.x} ${legend.y})`}
               onClick={e => { e.stopPropagation(); didDrag.current = false; }}
               onPointerDown={e => beginDrag(e, { type: 'legend', start: position(e), x: legend.x, y: legend.y })}>
-              <rect width={layout.width} height={layout.height} fill="white" stroke="#D2D8D2" strokeWidth={0.6}/>
-              <text x={15 * layout.scale} y={24 * layout.scale} fill="#253B32" fontSize={10 * layout.scale} fontFamily="DM Sans, sans-serif">ROOM COLOUR KEY</text>
-              {(() => { let rowY = 43 * layout.scale; return layout.rows.map(row => {
-                const y = rowY; rowY += row.height;
-                return <g key={row.category.id}><rect x={15 * layout.scale} y={y + layout.scale} width={13 * layout.scale} height={13 * layout.scale} fill={row.category.color} fillOpacity={row.category.opacity} stroke={row.category.color} strokeWidth={0.6}/>
-                  {row.lines.map((line, i) => <text key={i} x={38 * layout.scale} y={y + (11 + i * 13) * layout.scale} fontSize={10 * layout.scale} fontFamily="DM Sans, sans-serif" fill="#34463D">{line}</text>)}
-                </g>;
-              }); })()}
+              <LegendGraphic layout={layout}/>
               <title>Drag to move the legend</title>
             </g>}
             {chosen && tool === 'select' && chosenVertices.map((v, i) => <g key={i}>

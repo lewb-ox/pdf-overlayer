@@ -12,6 +12,8 @@ Run `npm ci` to install the locked dependencies, then `npm start` to launch the 
 
 ## Checks
 
+`src/legend.ts` builds the shared layout used by `LegendGraphic.tsx` and PDF export. Keep all text wrapping, category grouping and room numbering in that shared model. Room numbers and optional marker positions are saved with overlays; legend text is stored per page. Older version-1 projects without these optional fields receive automatic numbers when opened.
+
 Theme logic is in `src/theme.ts`, with a small pre-load initialiser in `index.html` to prevent a light flash. Keep their storage key and theme resolution consistent. The interface palette is defined by the light and dark semantic tokens in `src/styles.css`; document colours and the white PDF page are independent of the interface theme. Theme preference is a browser setting, separate from saved PDF projects.
 
 Run these commands from the project folder after installing the dependencies:

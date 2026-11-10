@@ -493,6 +493,43 @@
         "sidebar-scrim": "#00000080"
       },
       "documentRule": "PDF paper remains white; document overlays, legends and exported colours do not depend on the interface theme."
+    },
+    "documentLegend": {
+      "reference": "User-supplied NRH_First_Floor_AV_Category_Overlay.png, right-hand legend",
+      "layoutSource": "src/legend.ts",
+      "baseWidth": "306pt",
+      "paper": "#ffffff",
+      "title": {
+        "fontFamily": "DM Sans",
+        "fontSize": "14.5pt",
+        "fontWeight": 600,
+        "color": "#222222"
+      },
+      "subtitle": {
+        "fontSize": "9pt",
+        "color": "#666666"
+      },
+      "category": {
+        "fontSize": "11.5pt",
+        "fontWeight": 600,
+        "swatch": "23pt x 14pt"
+      },
+      "room": {
+        "fontSize": "9.5pt",
+        "lineHeight": "13pt",
+        "markerRadius": "4.7pt"
+      },
+      "planMarkerRadius": "8.5pt",
+      "notes": {
+        "fontSize": "8.3pt",
+        "color": "#666666"
+      },
+      "footer": {
+        "fontSize": "7pt",
+        "color": "#737373"
+      },
+      "themeIndependent": true,
+      "placement": "Movable within original PDF page; lower-right default. Place in clear space before export."
     }
   },
   "components": [

@@ -172,7 +172,7 @@ test('exports every page at source dimensions and aligns overlays on cropped pag
       const canvas = document.createElement('canvas'); const viewport = p.getViewport({ scale: 1 });
       canvas.width = viewport.width; canvas.height = viewport.height;
       await p.render({ canvas, viewport }).promise;
-      const pixel = [...canvas.getContext('2d')!.getImageData(150, 150, 1, 1).data];
+      const pixel = [...canvas.getContext('2d')!.getImageData(100, 180, 1, 1).data];
       const text = await p.getTextContent();
       results.push({ pixel, text: text.items.map((item: { str: string }) => item.str).join(' ') });
     }
@@ -185,7 +185,8 @@ test('exports every page at source dimensions and aligns overlays on cropped pag
     expect(sample.pixel[1]).toBeGreaterThan(220); expect(sample.pixel[1]).toBeLessThan(231);
     expect(sample.pixel[2]).toBeGreaterThan(214); expect(sample.pixel[2]).toBeLessThan(225);
     expect(sample.text).toContain(`REFERENCE PAGE ${i * 90}`);
-    expect(sample.text).toContain('ROOM COLOUR KEY');
+    expect(sample.text).toContain('rotated-cropped');
+    expect(sample.text).toContain('AV category overlay');
     expect(sample.text).toContain('AV1');
   }
 });

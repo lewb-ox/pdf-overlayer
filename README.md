@@ -99,7 +99,7 @@ Use the theme control in the header to choose **System**, **Light** or **Dark**.
 3. Select **Straight edge** and click around a room's corners. Click your first point again, or press **Enter**, to close the shape. You need at least three distinct points enclosing an area.
 4. For a curved edge, select **Curved edge**, click the curve's endpoint, then click to place its bend. You can switch between straight and curved tools within one room. To curve the closing edge, click the first point and then place the bend.
 5. Select **Select**, then click a room to edit it. Drag its white points to adjust corners or its gold handles to adjust curves. Use the side panel to change the room's name or category. The eye buttons hide or show rooms.
-6. Drag the **legend** to a clear space on the plan. It lists the visible categories used on the current page. Its position and visibility can be set separately for each page.
+6. Drag the **legend** to a clear space on the plan. It groups numbered room names under bold category headings and colour swatches, with matching number markers on the plan. Drag a room's number to reposition it. Under **Plan legend → Edit legend text**, you can set a title, subtitle, notes and footer for each page. The title defaults to the PDF filename. Legend position and visibility are also set separately for each page.
 7. Use the page selector for plans with several pages. **Zoom**, **Pan** and **Fit page** help you trace accurately. Finish or cancel the current room before changing pages.
 
 On smaller screens, use the menu button above the plan to open the colours and rooms panel. The **?** button opens drawing help.
@@ -136,9 +136,9 @@ When printing, choose **Actual size** or **100%**. **Fit to page** can change th
 | The address uses a port other than `5173` | Another application may be using that port. Open the address actually printed in the terminal. |
 | Save or Export is disabled | Finish the shape using **Enter** or **Close shape**, or press **Esc** to cancel it. Wait for any opening or exporting operation to finish. |
 | A PDF will not open | Password-protected PDFs are not supported. Save an unprotected copy first. PDF files must be no larger than 100 MB; saved projects must be no larger than 160 MB. |
-| Export reports an unsupported label character | Legend labels currently support Latin letters, numbers and punctuation. Replace the character identified in the error and retry. |
+| Export reports an unsupported character | Legend text, including room names, currently supports Latin letters, numbers and punctuation. Replace the character identified in the error and retry. |
 | A room or category is missing from the exported plan or legend | Check the room's eye button. The legend only includes categories used by visible rooms on that page. Also check that the page's **Plan legend** switch is on. |
-| Export says the legend is too tall | Shorten the category labels, use fewer categories on that page, or switch off that page's legend before exporting. |
+| Export says the legend is too tall | Shorten the legend text and room names, reduce the number of room entries on that page, or switch off that page's legend before exporting. |
 
 ## Updating your copy
 

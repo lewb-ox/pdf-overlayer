@@ -227,6 +227,8 @@ input[type='range']::-moz-range-thumb { width: 8px; height: 8px; border: 2px sol
 .room-select { display: flex; align-items: center; text-align: left; gap: 11px; min-width: 0; padding: 9px 8px; flex: 1; font-size: 11px; }
 .room-select > span:last-child { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 .room-color { width: 9px; height: 9px; border-radius: 2px; flex-shrink: 0; }
+.room-number { display: inline-flex; align-items: center; justify-content: center; min-width: 17px; height: 17px; padding: 0 2px; border: 1.5px solid; border-radius: 50%; font-size: 9px; font-weight: 600; font-variant-numeric: tabular-nums; flex-shrink: 0; }
+.room-number-marker { cursor: move; user-select: none; }
 .hidden-room .room-select { opacity: 0.5; }
 .room-empty { text-align: center; padding: 18px 0 8px; color: var(--muted); }
 .room-empty p { font-size: 11px; margin: 8px 0; }
@@ -243,6 +245,12 @@ input[type='range']::-moz-range-thumb { width: 8px; height: 8px; border: 2px sol
 .legend-section .section-heading { margin-bottom: 5px; }
 .legend-section p { color: var(--muted); font-size: 11px; line-height: 1.65; margin: 5px 0 8px; max-width: 28ch; }
 .legend-note { color: var(--muted); font-size: 9px; line-height: 1.5; display: block; }
+.legend-fields { margin-top: 14px; font-size: 10px; }
+.legend-fields summary { cursor: pointer; color: var(--ink); }
+.legend-field { margin-top: 12px; }
+.legend-fields label { display: block; color: var(--muted); margin-bottom: 5px; }
+.legend-fields input, .legend-fields textarea { width: 100%; padding: 7px 8px; border: 1px solid var(--field-border); border-radius: 4px; background: var(--field); color: var(--ink); font: inherit; }
+.legend-fields textarea { resize: vertical; min-height: 55px; }
 .switch { width: 29px; height: 17px; padding: 2px; border-radius: 20px; background: var(--switch-off); transition: background var(--fast); }
 .switch[aria-checked='true'] { background: var(--green); }
 .switch > span { display: block; width: 13px; height: 13px; background: white; border-radius: 50%; transition: transform 160ms var(--ease); }

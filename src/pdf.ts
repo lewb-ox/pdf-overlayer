@@ -1,9 +1,10 @@
 import { PDFDocument, StandardFonts, rgb, degrees, BlendMode } from 'pdf-lib';
 import fontkit from '@pdf-lib/fontkit';
 import fontUrl from '@fontsource/dm-sans/files/dm-sans-latin-400-normal.woff?url';
+import boldFontUrl from '@fontsource/dm-sans/files/dm-sans-latin-600-normal.woff?url';
 import { getDocument, GlobalWorkerOptions, type PDFDocumentProxy } from 'pdfjs-dist';
 import workerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
-import { INITIAL_CATEGORIES, getLegend, inverseMatrix, legendLayout, pageCategories, pathData, transformPoint, type EditorState, type Matrix, type PageInfo, type Point } from './model';
+import { INITIAL_CATEGORIES, defaultLegendTitle, getLegend, inverseMatrix, legendLayout, pathData, roomMarkerPosition, roomNumbers, transformPoint, type EditorState, type Matrix, type PageInfo, type Point } from './model';
 
 GlobalWorkerOptions.workerSrc = workerUrl;
 
@@ -20,61 +21,76 @@ export async function openDocument(bytes: Uint8Array): Promise<{ document: PDFDo
   } catch (error) { await document.loadingTask.destroy(); throw error; }
 }
 
-let embeddedFontBytes: Promise<ArrayBuffer> | undefined;
-export async function exportPdf(source: Uint8Array, state: EditorState, pages: PageInfo[]): Promise<Uint8Array> {
+let embeddedFontBytes: Promise<ArrayBuffer[]> | undefined;
+export async function exportPdf(source: Uint8Array, state: EditorState, pages: PageInfo[], filename = 'Plan overlay'): Promise<Uint8Array> {
   const pdf = await PDFDocument.load(source);
   pdf.registerFontkit(fontkit);
-  embeddedFontBytes ??= fetch(fontUrl).then(r => { if (!r.ok) throw new Error('Could not load the legend font. Reload the app and try again.'); return r.arrayBuffer(); });
-  const font = await pdf.embedFont(await embeddedFontBytes, { subset: true });
-  const supported = new Set(font.getCharacterSet());
-  const legendCategories = new Map(pages.flatMap((info, index) => getLegend(state, index, info).visible ? pageCategories(state, index).map(c => [c.id, c] as const) : []));
-  for (const category of legendCategories.values()) {
-    if ([...category.label].some(c => !supported.has(c.codePointAt(0)!))) {
-      throw new Error(`The label “${category.label}” contains characters unavailable in the export font. Please use Latin letters, numbers and punctuation.`);
-    }
-  }
+  embeddedFontBytes ??= Promise.all([fontUrl, boldFontUrl].map(url => fetch(url).then(r => {
+    if (!r.ok) throw new Error('Could not load the legend fonts. Reload the app and try again.');
+    return r.arrayBuffer();
+  }))).catch(error => { embeddedFontBytes = undefined; throw error; });
+  const fonts = await Promise.all((await embeddedFontBytes).map(bytes => pdf.embedFont(bytes, { subset: true })));
+  // Use the same loaded text metrics for wrapping in the preview and export.
+  await Promise.all([document.fonts.load('400 12px "DM Sans"'), document.fonts.load('600 14px "DM Sans"')]);
+  const supported = new Set(fonts[0].getCharacterSet());
+  const title = defaultLegendTitle(filename);
+  const numbers = roomNumbers(state.overlays);
   for (const [index, info] of pages.entries()) {
     const page = pdf.getPage(index);
     const inverse = inverseMatrix(info.transform);
+    const unit = Math.hypot(inverse[0], inverse[1]);
     const toPdf = (p: Point) => transformPoint(p, inverse);
     // drawSvgPath flips SVG's y-axis. Negate mapped PDF y to cancel that flip.
     const forSvg = (p: Point) => { const mapped = toPdf(p); return { x: mapped.x, y: -mapped.y }; };
-    for (const overlay of state.overlays.filter(o => o.page === index && !o.hidden)) {
+    const text = (value: string, x: number, baseline: number, size: number, color: string, bold = false, centered = false) => {
+      const font = fonts[bold ? 1 : 0];
+      const offset = centered ? font.widthOfTextAtSize(value, size) / 2 : 0;
+      const point = toPdf({ x: x - offset, y: baseline });
+      page.drawText(value, { x: point.x, y: point.y, font, size: size * unit,
+        rotate: degrees(Math.atan2(inverse[1], inverse[0]) * 180 / Math.PI), color: hexRgb(color) });
+    };
+    const numberBadge = (number: number, x: number, y: number, radius: number, color: string) => {
+      const point = toPdf({ x, y });
+      page.drawCircle({ x: point.x, y: point.y, size: radius * unit, color: rgb(1, 1, 1), borderColor: hexRgb(color), borderWidth: radius * 0.22 * unit });
+      const size = radius * (String(number).length === 1 ? 1.2 : String(number).length === 2 ? 1.05 : String(number).length === 3 ? 0.82 : 0.65);
+      text(String(number), x, y + size * 0.34, size, '#222222', true, true);
+    };
+    const visibleRooms = state.overlays.filter(o => o.page === index && !o.hidden);
+    for (const overlay of visibleRooms) {
       const category = state.categories.find(c => c.id === overlay.categoryId);
       if (!category) continue;
       page.drawSvgPath(pathData(overlay.vertices, true, forSvg), {
         x: 0, y: 0, color: hexRgb(category.color), opacity: category.opacity,
-        borderColor: hexRgb(category.color), borderWidth: 0.6 * Math.hypot(inverse[0], inverse[1]),
+        borderColor: hexRgb(category.color), borderWidth: 0.6 * unit,
         borderOpacity: Math.min(1, category.opacity + 0.25), blendMode: BlendMode.Multiply,
       });
     }
-    const categories = pageCategories(state, index);
-    const legend = getLegend(state, index, info);
-    if (legend.visible && categories.length) {
-      const layout = legendLayout(info, categories);
-      if (layout.height > info.height) throw new Error(`The legend is too tall for page ${index + 1}. Hide its legend or reduce the number or length of category labels.`);
+    // Draw numbers after all fills so an overlapping room cannot obscure a marker.
+    for (const overlay of visibleRooms) {
+      const point = overlay.labelPosition ?? roomMarkerPosition(overlay.vertices);
+      const category = state.categories.find(c => c.id === overlay.categoryId)!;
+      numberBadge(numbers.get(overlay.id)!, point.x, point.y, 8.5, category.color);
+    }
+    const legend = getLegend(state, index, info, title);
+    const layout = legendLayout(info, state, index, title);
+    if (legend.visible && layout.groups.length) {
+      if (layout.height > info.height) throw new Error(`The legend is too tall for page ${index + 1}. Shorten its text, reduce its room entries, or hide the legend on this page.`);
+      for (const item of layout.items) if (item.type === 'text' && [...item.text].some(c => !supported.has(c.codePointAt(0)!))) {
+        throw new Error(`The legend text “${item.text}” contains characters unavailable in the export font. Please use Latin letters, numbers and punctuation.`);
+      }
       const { x, y } = legend;
       const s = layout.scale;
       const rect = (rx: number, ry: number, w: number, h: number, fill: string, opacity = 1, border?: string) => {
         page.drawSvgPath(pathData([{ x: rx, y: ry }, { x: rx + w, y: ry }, { x: rx + w, y: ry + h }, { x: rx, y: ry + h }], true, forSvg), {
           x: 0, y: 0, color: hexRgb(fill), opacity,
-          ...(border ? { borderColor: hexRgb(border), borderWidth: 0.6 * Math.hypot(inverse[0], inverse[1]) } : {}),
+          ...(border ? { borderColor: hexRgb(border), borderWidth: 1.4 * s * unit } : {}),
         });
       };
-      const text = (value: string, tx: number, baseline: number, size: number, color: string) => {
-        const point = toPdf({ x: tx, y: baseline });
-        page.drawText(value, { x: point.x, y: point.y, font,
-          size: size * Math.hypot(inverse[0], inverse[1]),
-          rotate: degrees(Math.atan2(inverse[1], inverse[0]) * 180 / Math.PI), color: hexRgb(color),
-        });
-      };
-      rect(x, y, layout.width, layout.height, '#FFFFFF', 1, '#D2D8D2');
-      text('ROOM COLOUR KEY', x + 15 * s, y + 24 * s, 10 * s, '#253B32');
-      let rowY = y + 43 * s;
-      for (const row of layout.rows) {
-        rect(x + 15 * s, rowY + 1 * s, 13 * s, 13 * s, row.category.color, row.category.opacity, row.category.color);
-        row.lines.forEach((line, i) => text(line, x + 38 * s, rowY + (11 + i * 13) * s, 10 * s, '#34463D'));
-        rowY += row.height;
+      rect(x, y, layout.width, layout.height, '#FFFFFF');
+      for (const item of layout.items) {
+        if (item.type === 'text') text(item.text, x + item.x * s, y + item.y * s, item.size * s, item.color, item.weight === 600);
+        else if (item.type === 'number') numberBadge(item.number, x + item.x * s, y + item.y * s, item.radius * s, item.color);
+        else rect(x + item.x * s, y + item.y * s, item.width * s, item.height * s, item.category.color, item.category.opacity, item.category.color);
       }
     }
   }

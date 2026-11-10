@@ -8,8 +8,10 @@ export interface Overlay {
   categoryId: string;
   vertices: Vertex[];
   hidden?: boolean;
+  number?: number;
+  labelPosition?: Point;
 }
-export interface Legend { visible: boolean; x: number; y: number }
+export interface Legend { visible: boolean; x: number; y: number; title?: string; subtitle?: string; note?: string; footer?: string }
 export interface EditorState {
   categories: Category[];
   overlays: Overlay[];
@@ -82,41 +84,7 @@ export function validShape(vertices: Vertex[]): boolean {
   });
 }
 
-export function pageCategories(state: EditorState, page: number) {
-  const ids = new Set(state.overlays.filter(o => o.page === page && !o.hidden).map(o => o.categoryId));
-  return state.categories.filter(c => ids.has(c.id));
-}
-export function legendLayout(info: PageInfo, categories: Category[]) {
-  const scale = Math.min(1, info.width / 540, info.height / 400);
-  const width = 202 * scale;
-  const rows = categories.map(c => {
-    // Approximate wrapping is shared by the SVG preview and PDF export.
-    const lines = wrapLabel(c.label, 24);
-    return { category: c, lines, height: Math.max(23, lines.length * 13 + 8) * scale };
-  });
-  return { width, height: 45 * scale + rows.reduce((sum, r) => sum + r.height, 0) + 8 * scale, scale, rows };
-}
-export function wrapLabel(text: string, length: number): string[] {
-  const words = text.trim().split(/\s+/);
-  const lines: string[] = [];
-  let current = '';
-  for (let word of words) {
-    if (current && (current.length + word.length + 1) > length) { lines.push(current); current = ''; }
-    while (word.length > length) { if (current) { lines.push(current); current = ''; } lines.push(word.slice(0, length)); word = word.slice(length); }
-    if (word) current += (current ? ' ' : '') + word;
-  }
-  if (current) lines.push(current);
-  return lines.length ? lines : ['Untitled'];
-}
-export function getLegend(state: EditorState, page: number, info: PageInfo): Legend {
-  const layout = legendLayout(info, pageCategories(state, page));
-  const existing = state.legends[page] ?? { visible: true, x: info.width - layout.width - 24, y: info.height - layout.height - 24 };
-  return {
-    visible: existing.visible,
-    x: Math.max(0, Math.min(existing.x, info.width - layout.width)),
-    y: Math.max(0, Math.min(existing.y, info.height - layout.height)),
-  };
-}
+export { pageCategories, legendLayout, getLegend, wrapLabel, roomNumbers, nextRoomNumber, roomMarkerPosition, defaultLegendTitle } from './legend';
 
 export function moveVertex(vertices: Vertex[], index: number, p: Point): Vertex[] {
   const old = vertices[index];
@@ -146,14 +114,21 @@ export function validateProject(value: unknown): ProjectFile {
     ids.add(c.id);
   }
   const overlayIds = new Set<string>();
+  const roomNumbers = new Set<number>();
   const pointOK = (p: Point) => p && Number.isFinite(p.x) && Number.isFinite(p.y) && Math.abs(p.x) <= 1e7 && Math.abs(p.y) <= 1e7;
   for (const o of v.state.overlays) {
     if (!o || typeof o.id !== 'string' || overlayIds.has(o.id) || !Number.isInteger(o.page) || o.page < 0 || typeof o.name !== 'string' || o.name.length > 100 || !ids.has(o.categoryId) || !Array.isArray(o.vertices) || o.vertices.length > 5000 || !o.vertices.every(p => pointOK(p) && (!p.control || pointOK(p.control))) || !validShape(o.vertices) || (o.hidden !== undefined && typeof o.hidden !== 'boolean')) return bad();
     overlayIds.add(o.id);
+    if (o.number !== undefined) {
+      if (!Number.isInteger(o.number) || o.number < 1 || o.number > 99999 || roomNumbers.has(o.number)) return bad();
+      roomNumbers.add(o.number);
+    }
+    if (o.labelPosition !== undefined && !pointOK(o.labelPosition)) return bad();
   }
   if (!v.state.legends || typeof v.state.legends !== 'object' || Array.isArray(v.state.legends)) return bad();
   for (const [page, l] of Object.entries(v.state.legends)) {
     if (!/^\d+$/.test(page) || !l || typeof l.visible !== 'boolean' || !pointOK(l)) return bad();
+    for (const key of ['title', 'subtitle', 'note', 'footer'] as const) if (l[key] !== undefined && (typeof l[key] !== 'string' || l[key].length > (key === 'note' ? 1000 : 300))) return bad();
   }
   return v;
 }

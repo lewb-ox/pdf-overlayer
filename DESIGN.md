@@ -215,7 +215,7 @@ Tonal layering and fine borders define ordinary panels. Shadows establish a phys
 
 Small rounded rectangles give controls a precise but approachable form. Standard buttons use the control radius; fields and swatches are tighter, list rows and tools use the compact radius, and temporary bars/messages use the floating radius. Help and file-drop surfaces use the dialog radius. The PDF and its on-page legend retain square corners. Only switches, dots and editing handles use circular or pill forms.
 
-Borders are thin and functional: panel divisions, input boundaries, selected categories and document legends. Dashed lines communicate a draft, a curve guide or a file-drop target; they are not decorative framing.
+Borders are thin and functional: panel divisions, input boundaries, selected categories and legend colour swatches. Dashed lines communicate a draft, a curve guide or a file-drop target; they are not decorative framing.
 
 ## Components
 
@@ -253,7 +253,9 @@ A compact pill changes from muted green-gray to Tracing Green when on. Its white
 
 User category fill is translucent and uses multiply blending on the plan. Completed selections use the fixed green stroke. A draft uses a dashed outline and lighter fill, with the first vertex enlarged and visibly distinct as the closure target. Selected corners use white circles with green strokes; quadratic-curve controls use gold circles and dashed guides. Handle and stroke dimensions compensate for zoom so editing affordances remain visually stable.
 
-The on-page legend uses white paper, a fine gray-green stroke and DM Sans text. Its swatches mirror the used categories and opacity. It is part of document content and remains square-edged, distinct from the rounded application panels.
+The on-page legend follows the user's reference plan: a borderless white panel with a bold dark title, a smaller gray subtitle, generous separation between category groups, and rectangular colour swatches beside semibold category labels. Numbered room names sit below each category; small white circles with category-coloured outlines match draggable markers on the plan. Optional gray notes and smaller footer text follow the groups. DM Sans regular and semibold are embedded for export. The title defaults to the source filename; all legend text is editable per page.
+
+`src/legend.ts` supplies one measured layout to both the SVG preview and PDF export. Its 306-point panel scales proportionately for smaller pages, starts at the lower right and stays movable within the original page. Room numbering spans the document, survives category and visibility changes, and supports older saved projects. The legend is document content: preserve its white background and dark text in both interface themes, and use the user's category colours and transparency for its swatches.
 
 ### Feedback and temporary surfaces
 

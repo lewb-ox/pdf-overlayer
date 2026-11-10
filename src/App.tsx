@@ -4,8 +4,9 @@ import type { PDFDocumentProxy } from 'pdfjs-dist';
 import { ArrowDownToLine, ArrowLeft, ArrowRight, Check, ChevronDown, CircleHelp, Eye, EyeOff, FileText, FolderOpen, Hand, Layers2, LoaderCircle, Maximize, Menu, Minus, MousePointer2, PanelLeftClose, Pencil, Plus, Redo2, Save, ShieldCheck, Spline, Trash2, Undo2, Upload, VectorSquare, X } from 'lucide-react';
 import { PlanCanvas } from './PlanCanvas';
 import { ThemeControl } from './ThemeControl';
+import { LegendFields } from './LegendFields';
 import { base64ToBytes, bytesToBase64, createDemo, demoState, download, exportPdf, openDocument } from './pdf';
-import { emptyState, getLegend, uid, validShape, validateProject, type Category, type EditorState, type Overlay, type PageInfo, type Point, type ProjectFile, type Tool, type Vertex } from './model';
+import { defaultLegendTitle, emptyState, getLegend, nextRoomNumber, roomNumbers, uid, validShape, validateProject, type Category, type EditorState, type Overlay, type PageInfo, type Point, type ProjectFile, type Tool, type Vertex } from './model';
 
 interface History { past: EditorState[]; present: EditorState; future: EditorState[] }
 type Action = { type: 'commit' | 'reset'; state: EditorState } | { type: 'undo' | 'redo' };
@@ -61,6 +62,8 @@ export function App() {
   const chosen = state.overlays.find(o => o.id === selected);
   const info = pages[page];
   const loading = busy !== null;
+  const legendTitle = defaultLegendTitle(filename);
+  const numbers = roomNumbers(state.overlays);
 
   const commit = useCallback((value: EditorState) => { dispatch({ type: 'commit', state: value }); setDirty(true); }, []);
   const cancelDraft = () => { setDraft([]); setPending(null); setClosingCurve(false); };
@@ -85,6 +88,8 @@ export function App() {
       documentRef.current = opened.document;
       setPdf(opened.document); setPages(opened.pages); setSource(bytes); setFilename(name);
       const initial = nextState ?? emptyState();
+      const numbers = roomNumbers(initial.overlays);
+      initial.overlays = initial.overlays.map(o => ({ ...o, number: numbers.get(o.id) }));
       dispatch({ type: 'reset', state: initial });
       setActiveCategory(initial.categories[0].id); setSelected(null); setPage(0); setZoom(null);
       setDraft([]); setPending(null); setClosingCurve(false); setIsDemo(demo); setDirty(false); setTool('select');
@@ -128,7 +133,8 @@ export function App() {
     if (pending) { setNotice('Click to place the curve bend first, or press Backspace to remove its endpoint.'); return; }
     if (!validShape(vertices)) { setNotice('Add at least three distinct, non-collinear points to close a room.'); return; }
     const id = uid();
-    const overlay: Overlay = { id, page, name: `Room ${state.overlays.length + 1}`, categoryId: draftCategory.current, vertices };
+    const number = nextRoomNumber(state.overlays);
+    const overlay: Overlay = { id, page, number, name: `Room ${number}`, categoryId: draftCategory.current, vertices };
     commit({ ...state, overlays: [...state.overlays, overlay] });
     cancelDraft(); setSelected(id); setTool('select'); setNotice('Room closed. Drag its points to refine the shape.');
   };
@@ -139,7 +145,8 @@ export function App() {
         const vertices = draft.map((v, i) => i === 0 ? { ...v, control: point } : v);
         if (validShape(vertices)) {
           const id = uid();
-          commit({ ...state, overlays: [...state.overlays, { id, page, name: `Room ${state.overlays.length + 1}`, categoryId: draftCategory.current, vertices }] });
+          const number = nextRoomNumber(state.overlays);
+          commit({ ...state, overlays: [...state.overlays, { id, page, number, name: `Room ${number}`, categoryId: draftCategory.current, vertices }] });
           cancelDraft(); setSelected(id); setTool('select'); setNotice('Curved room closed. Drag its handles to refine it.');
         }
       } else { setDraft([...draft, { ...pending, control: point }]); setPending(null); }
@@ -180,7 +187,7 @@ export function App() {
     if (!source || loading || draft.length) return;
     setBusy('Exporting PDF'); setError(null);
     try {
-      const bytes = await exportPdf(source, state, pages);
+      const bytes = await exportPdf(source, state, pages, filename);
       download(bytes, filename.replace(/\.pdf$/i, '').replace('Example · ', '') + '-overlays.pdf', 'application/pdf');
       setNotice('PDF exported at the original page dimensions. Print at Actual size / 100% to retain the scale.');
     } catch (e) { setError(e instanceof Error ? e.message : 'Export failed. Please try again.'); }
@@ -215,7 +222,7 @@ export function App() {
     setPage(next); setSelected(null); setZoom(null);
   };
   const zoomBy = (factor: number) => setZoom(Math.max(0.1, Math.min(5, actualScale * factor)));
-  const setLegendVisible = (visible: boolean) => { if (info) commit({ ...state, legends: { ...state.legends, [page]: { ...getLegend(state, page, info), visible } } }); };
+  const setLegendVisible = (visible: boolean) => { if (info) commit({ ...state, legends: { ...state.legends, [page]: { ...getLegend(state, page, info, legendTitle), visible } } }); };
   const instruction = pending ? 'Click to place the curve bend. Backspace removes the endpoint.'
     : draft.length ? `${draft.length} points · Click the first point or press Enter to close.`
     : tool === 'line' ? 'Click the corners of a room. Return to the first point to close.'
@@ -258,7 +265,7 @@ export function App() {
           <div className="section-heading"><h2 id="rooms-heading">Room overlays <span>{currentOverlays.length}</span></h2><span className="subtle-label">This page</span></div>
           <div className="room-list">
             {currentOverlays.length ? currentOverlays.map(o => <div className={`room-row ${selected === o.id ? 'selected' : ''} ${o.hidden ? 'hidden-room' : ''}`} key={o.id}>
-              <button className="room-select" onClick={() => { if (draft.length) { setNotice('Finish or cancel your shape before selecting a room.'); return; } setSelected(o.id); setTool('select'); }} aria-pressed={selected === o.id}><span className="room-color" style={{ background: state.categories.find(c => c.id === o.categoryId)?.color }}/><span>{o.name}</span></button>
+              <button className="room-select" onClick={() => { if (draft.length) { setNotice('Finish or cancel your shape before selecting a room.'); return; } setSelected(o.id); setTool('select'); }} aria-pressed={selected === o.id}><span className="room-number" aria-hidden="true" style={{ borderColor: state.categories.find(c => c.id === o.categoryId)?.color }}>{numbers.get(o.id)}</span><span>{o.name}</span></button>
               <IconButton label={`${o.hidden ? 'Show' : 'Hide'} ${o.name}`} onClick={() => commit({ ...state, overlays: state.overlays.map(item => item.id === o.id ? { ...item, hidden: !item.hidden } : item) })}>{o.hidden ? <EyeOff size={14}/> : <Eye size={14}/>}</IconButton>
             </div>) : <div className="room-empty"><VectorSquare size={20}/><p>No rooms marked yet.</p><button onClick={() => { setTool('line'); setSidebarOpen(false); }}>Draw your first room <ArrowRight size={12}/></button></div>}
           </div>
@@ -267,14 +274,14 @@ export function App() {
             <div className="room-properties-footer"><span>{chosen.vertices.length} points · Closed</span><button className="text-danger" onClick={() => removeOverlay(chosen.id)}><Trash2 size={12}/> Delete room</button></div>
           </div>}
         </section>
-        <section className="legend-section" aria-labelledby="legend-heading"><div className="section-heading"><h2 id="legend-heading">Plan legend</h2><button type="button" role="switch" aria-checked={info ? getLegend(state, page, info).visible : true} aria-label="Show legend on this page" className="switch" onClick={() => info && setLegendVisible(!getLegend(state, page, info).visible)}><span/></button></div><p>Included in your PDF. Drag it on the plan to reposition.</p><span className="legend-note">Shows visible categories used on this page.</span></section>
+        <section className="legend-section" aria-labelledby="legend-heading"><div className="section-heading"><h2 id="legend-heading">Plan legend</h2><button type="button" role="switch" aria-checked={info ? getLegend(state, page, info, legendTitle).visible : true} aria-label="Show legend on this page" className="switch" onClick={() => info && setLegendVisible(!getLegend(state, page, info, legendTitle).visible)}><span/></button></div><p>Included in your PDF. Drag it on the plan to reposition.</p><span className="legend-note">Numbered rooms are grouped by category. Drag a room number to reposition it.</span>{info && <LegendFields key={page} legend={getLegend(state, page, info, legendTitle)} defaultTitle={legendTitle} onChange={update => commit({ ...state, legends: { ...state.legends, [page]: { ...getLegend(state, page, info, legendTitle), ...update } } })}/>}</section>
         <div className="sidebar-footer"><ShieldCheck size={14}/><span>Your files stay in your browser.</span></div>
       </aside>
       <main className="workspace">
         <div className="workspace-toolbar"><div className="drawing-tools"><IconButton label="Show colours and rooms" className="sidebar-toggle" onClick={() => setSidebarOpen(!sidebarOpen)}><Menu size={18}/></IconButton><div className="tool-group" role="toolbar" aria-label="Drawing tools">{TOOLS.map(t => <button key={t.id} className={`tool-button ${tool === t.id ? 'is-active' : ''}`} aria-label={`${t.label} (${t.key})`} title={`${t.label} (${t.key})`} aria-pressed={tool === t.id} disabled={loading} onClick={() => switchTool(t.id)}>{t.icon}<span>{t.label}</span></button>)}</div><span className="toolbar-divider"/><IconButton label="Undo (⌘/Ctrl Z)" disabled={loading || (!history.past.length && !draft.length)} onClick={undo}><Undo2 size={16}/></IconButton><IconButton label="Redo (⌘/Ctrl Shift Z)" disabled={loading || !history.future.length || draft.length > 0} onClick={redo}><Redo2 size={16}/></IconButton></div><IconButton label="Drawing help" onClick={() => setHelpOpen(true)}><CircleHelp size={17}/></IconButton></div>
         <div className="document-toolbar"><div className="page-controls"><IconButton label="Previous page" disabled={loading || page === 0 || draft.length > 0} onClick={() => changePage(page - 1)}><ArrowLeft size={14}/></IconButton><span>Page <select aria-label="PDF page" value={page} disabled={loading || draft.length > 0} onChange={e => changePage(Number(e.target.value))}>{pages.map((_, i) => <option key={i} value={i}>{i + 1}</option>)}</select> of {pages.length || '—'}</span><IconButton label="Next page" disabled={loading || page >= pages.length - 1 || draft.length > 0} onClick={() => changePage(page + 1)}><ArrowRight size={14}/></IconButton></div><div className="zoom-controls"><IconButton label="Zoom out" disabled={!info || actualScale <= 0.1} onClick={() => zoomBy(1 / 1.25)}><Minus size={14}/></IconButton><span className="zoom-value">{Math.round(actualScale * 100)}%</span><IconButton label="Zoom in" disabled={!info || actualScale >= 5} onClick={() => zoomBy(1.25)}><Plus size={14}/></IconButton><span className="toolbar-divider"/><button className={`fit-button ${zoom === null ? 'is-fit' : ''}`} onClick={() => setZoom(null)} disabled={!info}><Maximize size={13}/><span>Fit page</span></button></div></div>
         {isDemo && <div className="demo-banner"><span><span className="example-badge">Example plan</span><span className="demo-text">A little colour makes a lot clear. Try the tools, or start with your own plan.</span></span><button onClick={() => fileRef.current?.click()} disabled={loading}>Open your PDF <ArrowRight size={13}/></button></div>}
-        <div className="canvas-container"><PlanCanvas pdf={pdf} info={info} page={page} state={state} tool={tool} zoom={zoom} onScale={setActualScale} selected={selected} onSelect={id => { setSelected(id); if (id) setActiveCategory(state.overlays.find(o => o.id === id)?.categoryId ?? category.id); }} onCommit={commit} draft={draft} pending={pending} closingCurve={closingCurve} color={state.categories.find(c => c.id === (draft.length ? draftCategory.current : category.id))?.color ?? category.color} opacity={category.opacity} onPoint={addPoint} onOpen={() => fileRef.current?.click()} onError={setError}/>
+        <div className="canvas-container"><PlanCanvas legendTitle={legendTitle} pdf={pdf} info={info} page={page} state={state} tool={tool} zoom={zoom} onScale={setActualScale} selected={selected} onSelect={id => { setSelected(id); if (id) setActiveCategory(state.overlays.find(o => o.id === id)?.categoryId ?? category.id); }} onCommit={commit} draft={draft} pending={pending} closingCurve={closingCurve} color={state.categories.find(c => c.id === (draft.length ? draftCategory.current : category.id))?.color ?? category.color} opacity={category.opacity} onPoint={addPoint} onOpen={() => fileRef.current?.click()} onError={setError}/>
           {draft.length > 0 && <div className="draft-bar"><span className="drawing-dot"/><span>Drawing room <strong>{draft.length} points</strong></span><button className="draft-cancel" onClick={cancelDraft}>Cancel <kbd>Esc</kbd></button><button className="primary-button" disabled={!validShape(draft) || !!pending} onClick={() => finishShape()}><Check size={14}/> Close shape <kbd>↵</kbd></button></div>}
           {loading && <div className="busy-overlay" role="status"><LoaderCircle size={23} className="spin"/><span>{busy}…</span></div>}
         </div>

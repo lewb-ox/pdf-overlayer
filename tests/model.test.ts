@@ -48,7 +48,7 @@ describe('legends and saved projects', () => {
     state.legends[0] = { x: 9999, y: -20, visible: true };
     const info = { width: 800, height: 600, transform: [1, 0, 0, -1, 0, 600] as Matrix };
     const legend = getLegend(state, 0, info);
-    expect(legend.x + legendLayout(info, pageCategories(state, 0)).width).toBeLessThanOrEqual(info.width);
+    expect(legend.x + legendLayout(info, state, 0).width).toBeLessThanOrEqual(info.width);
     expect(legend.y).toBe(0);
   });
   it('wraps long labels, including a single unbroken word', () => {
