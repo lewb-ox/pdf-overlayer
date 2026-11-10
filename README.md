@@ -8,10 +8,9 @@ The tool runs on your computer in a web browser. Your PDFs are processed in the 
 
 You will need:
 
-- A Windows, macOS or Linux computer. A mouse or trackpad is useful for tracing rooms.
+- A Windows, macOS or Linux computer.
 - An up-to-date desktop web browser, such as Chrome or Edge.
 - **Node.js and npm**, installed using the instructions below. These run the tool on your computer.
-- An internet connection for the initial download and installation.
 
 This version is supplied as a project folder rather than a desktop installer. You will use a terminal to start it; you do not need to edit any code or install Git.
 
@@ -65,7 +64,7 @@ Wait until the command finishes and the terminal prompt returns. This downloads 
 Run:
 
 ```sh
-npm run dev
+npm start
 ```
 
 The terminal should show a **Local** address, usually:
@@ -83,7 +82,7 @@ You should now see an example floor plan with several coloured rooms. You can tr
 To use the tool again:
 
 1. Open a terminal in the same project folder, as described in step 3 above.
-2. Run `npm run dev`.
+2. Run `npm start`.
 3. Open the **Local** address in your browser.
 4. If you saved an editable project previously, use **Open PDF** to load it.
 
@@ -129,9 +128,9 @@ When printing, choose **Actual size** or **100%**. **Fit to page** can change th
 | `node` or `npm` is not recognised, or you see `command not found` | Install Node.js LTS, then close and reopen your terminal. Run `node --version` and `npm --version` again. |
 | A warning mentions `EBADENGINE` or an unsupported Node.js version | Install Node.js 24 or a newer LTS release, reopen the terminal and run `npm ci` again. |
 | An error mentions `ENOENT` or a missing `package.json` | Your terminal is in the wrong folder. Open it in the extracted folder that contains `package.json`, then retry. |
-| Windows PowerShell says `npm.ps1` cannot run because scripts are disabled | Use **Command Prompt** as described above. Alternatively, use `npm.cmd ci` and `npm.cmd run dev` in PowerShell. |
+| Windows PowerShell says `npm.ps1` cannot run because scripts are disabled | Use **Command Prompt** as described above. Alternatively, use `npm.cmd ci` and `npm.cmd start` in PowerShell. |
 | Installation fails with a network, certificate or proxy error | Check your internet connection. On a managed computer or network, ask your IT support team whether npm downloads are permitted. Retry `npm ci` once the connection is working. |
-| The browser cannot connect to the Local address | Check that `npm run dev` is still running, then copy the exact Local address from the terminal. If the terminal was closed, start the tool again. |
+| The browser cannot connect to the Local address | Check that `npm start` is still running, then copy the exact Local address from the terminal. If the terminal was closed, start the tool again. |
 | The address uses a port other than `5173` | Another application may be using that port. Open the address actually printed in the terminal. |
 | Save or Export is disabled | Finish the shape using **Enter** or **Close shape**, or press **Esc** to cancel it. Wait for any opening or exporting operation to finish. |
 | A PDF will not open | Password-protected PDFs are not supported. Save an unprotected copy first. PDF files must be no larger than 100 MB; saved projects must be no larger than 160 MB. |

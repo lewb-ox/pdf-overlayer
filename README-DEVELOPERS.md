@@ -6,6 +6,10 @@ For installation and everyday use, see the [user README](README.md).
 
 The application uses React, TypeScript, Vite, PDF.js and pdf-lib.
 
+## Running locally
+
+Run `npm ci` to install the locked dependencies, then `npm start` to launch the local Vite development server. Open the Local address shown in the terminal.
+
 ## Checks
 
 Run these commands from the project folder after installing the dependencies:
