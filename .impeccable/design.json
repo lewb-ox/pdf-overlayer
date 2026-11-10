@@ -1,0 +1,486 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-10T11:20:28.100038+00:00",
+  "title": "Design System: PDF Overlayer",
+  "extensions": {
+    "colorMeta": {
+      "green": {
+        "role": "primary",
+        "displayName": "Tracing Green",
+        "tonalRamp": [
+          "oklch(15% 0.0692 174.86)",
+          "oklch(26.43% 0.0692 174.86)",
+          "oklch(37.86% 0.0692 174.86)",
+          "oklch(49.29% 0.0692 174.86)",
+          "oklch(60.71% 0.0692 174.86)",
+          "oklch(72.14% 0.0692 174.86)",
+          "oklch(83.57% 0.0692 174.86)",
+          "oklch(95% 0.0692 174.86)"
+        ]
+      },
+      "green-dark": {
+        "role": "primary",
+        "displayName": "Deep Tracing Green",
+        "tonalRamp": [
+          "oklch(15% 0.0583 173.22)",
+          "oklch(26.43% 0.0583 173.22)",
+          "oklch(37.86% 0.0583 173.22)",
+          "oklch(49.29% 0.0583 173.22)",
+          "oklch(60.71% 0.0583 173.22)",
+          "oklch(72.14% 0.0583 173.22)",
+          "oklch(83.57% 0.0583 173.22)",
+          "oklch(95% 0.0583 173.22)"
+        ]
+      },
+      "green-light": {
+        "role": "primary",
+        "displayName": "Green Wash",
+        "tonalRamp": [
+          "oklch(15% 0.0126 149.24)",
+          "oklch(26.43% 0.0126 149.24)",
+          "oklch(37.86% 0.0126 149.24)",
+          "oklch(49.29% 0.0126 149.24)",
+          "oklch(60.71% 0.0126 149.24)",
+          "oklch(72.14% 0.0126 149.24)",
+          "oklch(83.57% 0.0126 149.24)",
+          "oklch(95% 0.0126 149.24)"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Document White",
+        "tonalRamp": [
+          "oklch(15% 0.0000 0.00)",
+          "oklch(26.43% 0.0000 0.00)",
+          "oklch(37.86% 0.0000 0.00)",
+          "oklch(49.29% 0.0000 0.00)",
+          "oklch(60.71% 0.0000 0.00)",
+          "oklch(72.14% 0.0000 0.00)",
+          "oklch(83.57% 0.0000 0.00)",
+          "oklch(95% 0.0000 0.00)"
+        ]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Warm Panel",
+        "tonalRamp": [
+          "oklch(15% 0.0041 91.45)",
+          "oklch(26.43% 0.0041 91.45)",
+          "oklch(37.86% 0.0041 91.45)",
+          "oklch(49.29% 0.0041 91.45)",
+          "oklch(60.71% 0.0041 91.45)",
+          "oklch(72.14% 0.0041 91.45)",
+          "oklch(83.57% 0.0041 91.45)",
+          "oklch(95% 0.0041 91.45)"
+        ]
+      },
+      "canvas": {
+        "role": "neutral",
+        "displayName": "Desk Gray-Green",
+        "tonalRamp": [
+          "oklch(15% 0.0070 124.45)",
+          "oklch(26.43% 0.0070 124.45)",
+          "oklch(37.86% 0.0070 124.45)",
+          "oklch(49.29% 0.0070 124.45)",
+          "oklch(60.71% 0.0070 124.45)",
+          "oklch(72.14% 0.0070 124.45)",
+          "oklch(83.57% 0.0070 124.45)",
+          "oklch(95% 0.0070 124.45)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Forest Ink",
+        "tonalRamp": [
+          "oklch(15% 0.0263 164.32)",
+          "oklch(26.43% 0.0263 164.32)",
+          "oklch(37.86% 0.0263 164.32)",
+          "oklch(49.29% 0.0263 164.32)",
+          "oklch(60.71% 0.0263 164.32)",
+          "oklch(72.14% 0.0263 164.32)",
+          "oklch(83.57% 0.0263 164.32)",
+          "oklch(95% 0.0263 164.32)"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Quiet Ink",
+        "tonalRamp": [
+          "oklch(15% 0.0193 162.20)",
+          "oklch(26.43% 0.0193 162.20)",
+          "oklch(37.86% 0.0193 162.20)",
+          "oklch(49.29% 0.0193 162.20)",
+          "oklch(60.71% 0.0193 162.20)",
+          "oklch(72.14% 0.0193 162.20)",
+          "oklch(83.57% 0.0193 162.20)",
+          "oklch(95% 0.0193 162.20)"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Soft Rule",
+        "tonalRamp": [
+          "oklch(15% 0.0103 131.37)",
+          "oklch(26.43% 0.0103 131.37)",
+          "oklch(37.86% 0.0103 131.37)",
+          "oklch(49.29% 0.0103 131.37)",
+          "oklch(60.71% 0.0103 131.37)",
+          "oklch(72.14% 0.0103 131.37)",
+          "oklch(83.57% 0.0103 131.37)",
+          "oklch(95% 0.0103 131.37)"
+        ]
+      },
+      "danger": {
+        "role": "semantic",
+        "displayName": "Destructive Red",
+        "tonalRamp": [
+          "oklch(15% 0.1352 29.51)",
+          "oklch(26.43% 0.1352 29.51)",
+          "oklch(37.86% 0.1352 29.51)",
+          "oklch(49.29% 0.1352 29.51)",
+          "oklch(60.71% 0.1352 29.51)",
+          "oklch(72.14% 0.1352 29.51)",
+          "oklch(83.57% 0.1352 29.51)",
+          "oklch(95% 0.1352 29.51)"
+        ]
+      },
+      "secondary-border": {
+        "role": "neutral",
+        "displayName": "Secondary Stroke",
+        "tonalRamp": [
+          "oklch(15% 0.0162 130.44)",
+          "oklch(26.43% 0.0162 130.44)",
+          "oklch(37.86% 0.0162 130.44)",
+          "oklch(49.29% 0.0162 130.44)",
+          "oklch(60.71% 0.0162 130.44)",
+          "oklch(72.14% 0.0162 130.44)",
+          "oklch(83.57% 0.0162 130.44)",
+          "oklch(95% 0.0162 130.44)"
+        ]
+      },
+      "secondary-hover": {
+        "role": "neutral",
+        "displayName": "Secondary Hover",
+        "tonalRamp": [
+          "oklch(15% 0.0080 106.55)",
+          "oklch(26.43% 0.0080 106.55)",
+          "oklch(37.86% 0.0080 106.55)",
+          "oklch(49.29% 0.0080 106.55)",
+          "oklch(60.71% 0.0080 106.55)",
+          "oklch(72.14% 0.0080 106.55)",
+          "oklch(83.57% 0.0080 106.55)",
+          "oklch(95% 0.0080 106.55)"
+        ]
+      },
+      "row-selected": {
+        "role": "neutral",
+        "displayName": "Selected Wash",
+        "tonalRamp": [
+          "oklch(15% 0.0124 137.79)",
+          "oklch(26.43% 0.0124 137.79)",
+          "oklch(37.86% 0.0124 137.79)",
+          "oklch(49.29% 0.0124 137.79)",
+          "oklch(60.71% 0.0124 137.79)",
+          "oklch(72.14% 0.0124 137.79)",
+          "oklch(83.57% 0.0124 137.79)",
+          "oklch(95% 0.0124 137.79)"
+        ]
+      },
+      "row-selected-border": {
+        "role": "neutral",
+        "displayName": "Selected Stroke",
+        "tonalRamp": [
+          "oklch(15% 0.0239 139.44)",
+          "oklch(26.43% 0.0239 139.44)",
+          "oklch(37.86% 0.0239 139.44)",
+          "oklch(49.29% 0.0239 139.44)",
+          "oklch(60.71% 0.0239 139.44)",
+          "oklch(72.14% 0.0239 139.44)",
+          "oklch(83.57% 0.0239 139.44)",
+          "oklch(95% 0.0239 139.44)"
+        ]
+      },
+      "tool-active-ink": {
+        "role": "neutral",
+        "displayName": "Active Tool Ink",
+        "tonalRamp": [
+          "oklch(15% 0.0649 174.63)",
+          "oklch(26.43% 0.0649 174.63)",
+          "oklch(37.86% 0.0649 174.63)",
+          "oklch(49.29% 0.0649 174.63)",
+          "oklch(60.71% 0.0649 174.63)",
+          "oklch(72.14% 0.0649 174.63)",
+          "oklch(83.57% 0.0649 174.63)",
+          "oklch(95% 0.0649 174.63)"
+        ]
+      },
+      "field": {
+        "role": "neutral",
+        "displayName": "Field Paper",
+        "tonalRamp": [
+          "oklch(15% 0.0054 95.10)",
+          "oklch(26.43% 0.0054 95.10)",
+          "oklch(37.86% 0.0054 95.10)",
+          "oklch(49.29% 0.0054 95.10)",
+          "oklch(60.71% 0.0054 95.10)",
+          "oklch(72.14% 0.0054 95.10)",
+          "oklch(83.57% 0.0054 95.10)",
+          "oklch(95% 0.0054 95.10)"
+        ]
+      },
+      "field-border": {
+        "role": "neutral",
+        "displayName": "Field Stroke",
+        "tonalRamp": [
+          "oklch(15% 0.0150 132.49)",
+          "oklch(26.43% 0.0150 132.49)",
+          "oklch(37.86% 0.0150 132.49)",
+          "oklch(49.29% 0.0150 132.49)",
+          "oklch(60.71% 0.0150 132.49)",
+          "oklch(72.14% 0.0150 132.49)",
+          "oklch(83.57% 0.0150 132.49)",
+          "oklch(95% 0.0150 132.49)"
+        ]
+      },
+      "selection-stroke": {
+        "role": "neutral",
+        "displayName": "Plan Selection Green",
+        "tonalRamp": [
+          "oklch(15% 0.0643 174.44)",
+          "oklch(26.43% 0.0643 174.44)",
+          "oklch(37.86% 0.0643 174.44)",
+          "oklch(49.29% 0.0643 174.44)",
+          "oklch(60.71% 0.0643 174.44)",
+          "oklch(72.14% 0.0643 174.44)",
+          "oklch(83.57% 0.0643 174.44)",
+          "oklch(95% 0.0643 174.44)"
+        ]
+      },
+      "curve-handle": {
+        "role": "editing-affordance",
+        "displayName": "Curve Handle Gold",
+        "tonalRamp": [
+          "oklch(15% 0.1018 84.17)",
+          "oklch(26.43% 0.1018 84.17)",
+          "oklch(37.86% 0.1018 84.17)",
+          "oklch(49.29% 0.1018 84.17)",
+          "oklch(60.71% 0.1018 84.17)",
+          "oklch(72.14% 0.1018 84.17)",
+          "oklch(83.57% 0.1018 84.17)",
+          "oklch(95% 0.1018 84.17)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "headline": {
+        "displayName": "Editorial headline",
+        "purpose": "Restrained sidebar heading; contextual Newsreader sizes also occur in help, drop and empty surfaces."
+      },
+      "title": {
+        "displayName": "Brand title",
+        "purpose": "Compact sans-serif brand with a semibold emphasized word."
+      },
+      "body": {
+        "displayName": "Supporting prose",
+        "purpose": "Short explanations in panels; help prose uses a slightly larger contextual size."
+      },
+      "label": {
+        "displayName": "Action label",
+        "purpose": "Primary and secondary controls."
+      },
+      "section": {
+        "displayName": "Section heading",
+        "purpose": "Compact semibold property and list headings."
+      }
+    },
+    "shadows": [
+      {
+        "name": "paper",
+        "value": "0 4px 24px #293a3217, 0 1px 4px #293a3210",
+        "purpose": "Separates the white document from the desk."
+      },
+      {
+        "name": "drawing-bar",
+        "value": "0 4px 22px #293a3226",
+        "purpose": "Raises temporary shape controls."
+      },
+      {
+        "name": "message",
+        "value": "0 5px 26px #293a3226",
+        "purpose": "Distinguishes transient feedback."
+      },
+      {
+        "name": "help-dialog",
+        "value": "0 16px 80px #182f3533",
+        "purpose": "Raises help above its translucent backdrop."
+      },
+      {
+        "name": "slider-thumb",
+        "value": "0 1px 3px #203d3026",
+        "purpose": "Small slider affordance."
+      }
+    ],
+    "motion": [
+      {
+        "name": "fast",
+        "value": "150ms",
+        "purpose": "Background and colour transitions on controls."
+      },
+      {
+        "name": "ease",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Switch and drawer easing."
+      },
+      {
+        "name": "switch-thumb",
+        "value": "160ms",
+        "purpose": "Horizontal checked-state motion."
+      },
+      {
+        "name": "drawer",
+        "value": "180ms",
+        "purpose": "Sidebar transform and visibility transition."
+      },
+      {
+        "name": "spinner",
+        "value": "1.1s linear infinite",
+        "purpose": "Loading feedback."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "0.01ms",
+        "purpose": "Reduced-motion media query removes effective transitions and repeats animation only once."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "wide",
+        "value": "1600px"
+      },
+      {
+        "name": "compact",
+        "value": "1100px"
+      },
+      {
+        "name": "drawer",
+        "value": "780px"
+      },
+      {
+        "name": "narrow",
+        "value": "430px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "A compact green action for completing a task.",
+      "html": "<button class=\"ds-primary\">Export PDF</button>",
+      "css": ".ds-primary { font-family: 'DM Sans', sans-serif; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 9px; border-radius: var(--radius, 6px); padding: 10px 15px; font-weight: 500; font-size: 12px; line-height: 18px; min-height: 38px; white-space: nowrap; transition: background var(--fast, 150ms), box-shadow var(--fast, 150ms);  border: 0; background: var(--green, #276657); color: var(--paper, #ffffff); } .ds-primary:hover:not(:disabled) { background: var(--green-dark, #1c4e41); } .ds-primary:focus-visible { outline: 2px solid var(--green, #276657); outline-offset: 3px; } .ds-primary:disabled { opacity: .4; cursor: not-allowed; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "A bounded warm-panel action for opening content.",
+      "html": "<button class=\"ds-secondary\">Open PDF</button>",
+      "css": ".ds-secondary { font-family: 'DM Sans', sans-serif; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 9px; border-radius: var(--radius, 6px); padding: 10px 15px; font-weight: 500; font-size: 12px; line-height: 18px; min-height: 38px; white-space: nowrap; transition: background var(--fast, 150ms), box-shadow var(--fast, 150ms);  border: 1px solid #d4dacf; background: var(--surface, #fbfaf7); color: var(--ink, #293a32); } .ds-secondary:hover:not(:disabled) { background: #efefe9; } .ds-secondary:focus-visible { outline: 2px solid var(--green, #276657); outline-offset: 3px; } .ds-secondary:disabled { opacity: .4; cursor: not-allowed; }"
+    },
+    {
+      "name": "Icon Button",
+      "kind": "button",
+      "refersTo": "button-icon",
+      "description": "Quiet utility control with an accessible name.",
+      "html": "<button class=\"ds-icon\" aria-label=\"Add category\" title=\"Add category\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"><path d=\"M12 5v14M5 12h14\"/></svg></button>",
+      "css": ".ds-icon { font-family: 'DM Sans', sans-serif; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 0; border-radius: 5px; color: var(--muted, #5c6962); background: none; transition: background var(--fast, 150ms), color var(--fast, 150ms); } .ds-icon:hover:not(:disabled) { color: var(--ink, #293a32); background: #e9ede6; } .ds-icon:focus-visible { outline: 2px solid var(--green, #276657); outline-offset: 3px; } .ds-icon:disabled { opacity: .4; cursor: not-allowed; }"
+    },
+    {
+      "name": "Drawing Mode Toolbar",
+      "kind": "nav",
+      "refersTo": "tool-active",
+      "description": "The editor mode selector; active mode is distinct from hover.",
+      "html": "<div class=\"ds-tools\" role=\"toolbar\" aria-label=\"Drawing tools\"><button class=\"ds-tool\" aria-pressed=\"false\">Select</button><button class=\"ds-tool\" aria-pressed=\"true\">Straight edge</button><button class=\"ds-tool\" aria-pressed=\"false\">Curved edge</button><button class=\"ds-tool\" aria-pressed=\"false\">Pan</button></div>",
+      "css": ".ds-tools { display: flex; gap: 4px; flex-wrap: wrap; } .ds-tool { font-family: 'DM Sans', sans-serif; cursor: pointer; display: flex; align-items: center; height: 33px; padding: 0 10px; border: 0; border-radius: 5px; font-size: 11px; color: var(--muted, #5c6962); background: none; transition: background var(--fast, 150ms), color var(--fast, 150ms); } .ds-tool:hover:not(:disabled) { color: var(--ink, #293a32); background: #eef0e9; } .ds-tool[aria-pressed=\"true\"] { color: #235d4f; background: var(--green-light, #e6eee7); font-weight: 500; } .ds-tool:focus-visible { outline: 2px solid var(--green, #276657); outline-offset: 3px; } .ds-tool:disabled { opacity: .4; cursor: not-allowed; }"
+    },
+    {
+      "name": "Room Name Field",
+      "kind": "input",
+      "refersTo": "field",
+      "description": "Compact labelled property field on warm paper.",
+      "html": "<label class=\"ds-field-label\" for=\"ds-room-name\">Room name</label><input class=\"ds-field\" id=\"ds-room-name\" value=\"Meeting room\"/>",
+      "css": ".ds-field-label { display: block; margin-bottom: 5px; font: 10px 'DM Sans', sans-serif; color: var(--muted, #5c6962); } .ds-field { width: 220px; max-width: 100%; border: 1px solid #d5dbd1; padding: 7px 8px; color: var(--ink, #293a32); background: #fffefa; border-radius: 4px; font: 11px 'DM Sans', sans-serif; caret-color: var(--green, #276657); } .ds-field:focus-visible { outline: 2px solid var(--green, #276657); outline-offset: 3px; }"
+    },
+    {
+      "name": "Selected Category Row",
+      "kind": "custom",
+      "refersTo": "category-selected",
+      "description": "Editable content swatch beside a persistent application selection state.",
+      "html": "<div class=\"ds-category\"><span class=\"ds-swatch\" aria-label=\"Example category colour\"></span><button class=\"ds-category-select\" aria-pressed=\"true\"><span>Meeting rooms</span><span class=\"ds-count\">3</span></button></div>",
+      "css": ".ds-category { display: flex; align-items: center; gap: 10px; height: 37px; max-width: 250px; border-radius: 5px; padding: 0 7px 0 10px; background: #e9efe7; border: 1px solid #d5e1d2; } .ds-swatch { width: 16px; height: 16px; border-radius: 4px; background: #9677B0; flex-shrink: 0; } .ds-category-select { font-family: 'DM Sans', sans-serif; cursor: pointer; align-self: stretch; display: flex; align-items: center; justify-content: space-between; gap: 5px; flex: 1; min-width: 0; padding: 0; border: 0; background: none; color: var(--ink, #293a32); font-size: 12px; text-align: left; } .ds-count { font-size: 10px; font-variant-numeric: tabular-nums; color: var(--muted, #5c6962); } .ds-category-select:focus-visible { outline: 2px solid var(--green, #276657); outline-offset: 3px; }"
+    },
+    {
+      "name": "Document Paper",
+      "kind": "card",
+      "refersTo": "paper",
+      "description": "Square white document surface raised subtly from the desk.",
+      "html": "<div class=\"ds-desk\"><div class=\"ds-paper\" aria-label=\"Document paper\"></div></div>",
+      "css": ".ds-desk { padding: 24px; background: var(--canvas, #eaece7); } .ds-paper { width: 220px; max-width: 100%; height: 150px; background: var(--paper, #ffffff); box-shadow: 0 4px 24px #293a3217, 0 1px 4px #293a3210; }"
+    },
+    {
+      "name": "Legend Switch",
+      "kind": "custom",
+      "refersTo": "switch",
+      "description": "Compact checked-state control for legend visibility.",
+      "html": "<button class=\"ds-switch\" role=\"switch\" aria-label=\"Show legend on this page\" aria-checked=\"true\"><span></span></button>",
+      "css": ".ds-switch { font-family: 'DM Sans', sans-serif; cursor: pointer; width: 29px; height: 17px; padding: 2px; border: 0; border-radius: 20px; background: #b8c0b6; transition: background var(--fast, 150ms); } .ds-switch[aria-checked=\"true\"] { background: var(--green, #276657); } .ds-switch > span { display: block; width: 13px; height: 13px; background: white; border-radius: 50%; transition: transform 160ms var(--ease, cubic-bezier(0.16, 1, 0.3, 1)); } .ds-switch[aria-checked=\"true\"] > span { transform: translateX(12px); } .ds-switch:focus-visible { outline: 2px solid var(--green, #276657); outline-offset: 3px; } @media (prefers-reduced-motion: reduce) { .ds-switch, .ds-switch > span { transition-duration: .01ms; } }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Translucent Tracing Desk",
+    "overview": "Warm paper panels sit against a quiet gray-green work surface. The white document remains visually distinct, while precise green controls make the application feel calm, useful and ready for detailed work. Restrained Newsreader headings add a human signature; compact DM Sans controls carry the operational detail.\n\nThis system favours crisp rules, small controlled curves and restrained elevation. Most colour on the plan belongs to the user's editable overlays. Application states retain their own consistent language, independent of the colours chosen for rooms.",
+    "keyCharacteristics": [
+      "Warm, quiet surfaces with crisp control contrast.",
+      "Compact, nearby controls with clearly expressed active states.",
+      "White document paper with translucent content layered above it.",
+      "Editorial serif accents supported by practical sans-serif typography."
+    ],
+    "rules": [
+      {
+        "name": "The Content Colour Rule",
+        "body": "Room category colours and opacity are editable document content. Do not promote demo category colours into application state tokens or use the user's current category colour for focus, errors or tool selection.",
+        "section": "colors"
+      },
+      {
+        "name": "The State Contrast Rule",
+        "body": "Active controls use green text and a pale green surface; selection on the plan adds the fixed `selection-stroke`. White vertex handles and gold `curve-handle` controls distinguish corner editing from curve editing. Destructive actions use `danger` and explicit text or icons.",
+        "section": "colors"
+      },
+      {
+        "name": "The Quiet Signature Rule",
+        "body": "Preserve the contrast between occasional Newsreader headings and DM Sans controls. Do not transfer the serif treatment to routine buttons, fields, numeric feedback or lists.",
+        "section": "typography"
+      },
+      {
+        "name": "The Paper Depth Rule",
+        "body": "Reserve substantial shadow for document paper and temporary raised surfaces. Persistent application panels remain quiet, bounded surfaces.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do keep warm application panels, gray-green desk and white document paper visually distinct.",
+      "Do preserve fixed green focus and selection cues independently of editable room colours.",
+      "Do use Newsreader sparingly and DM Sans for controls and numerical feedback.",
+      "Do pair compact controls with accessible names, visible focus and explicit active states.",
+      "Do use fine rules for persistent grouping and reserve substantial elevation for paper and temporary surfaces.",
+      "Do keep the current editor's composition and demo messaging in surface strategy rather than treating them as global page requirements."
+    ],
+    "donts": [
+      "Don't turn category swatches or example overlay colours into application semantic states.",
+      "Don't use a decorative shadow on every sidebar section or soften the actual document into a rounded card.",
+      "Don't replace explicit drawing, selection or error feedback with colour alone.",
+      "Don't introduce new motion or large display typography by extrapolating from the quiet serif accent."
+    ]
+  }
+}
