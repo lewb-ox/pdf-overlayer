@@ -92,6 +92,8 @@ To stop, save your project, return to the terminal and press **Ctrl+C**. On Wind
 
 ## Marking your first plan
 
+Use the theme control in the header to choose **System**, **Light** or **Dark**. **System** is the default and follows your computer's appearance setting as it changes. Your choice is remembered in this browser when browser storage is available. The PDF page stays white in every theme, and the theme does not change exported PDFs.
+
 1. Select **Open PDF** and choose your plan. You can also drag a PDF into the editor.
 2. Choose a category in the **Colour key**. Click a colour swatch to change its colour, the pencil to edit its label, or **+** to add a category. Use **Opacity** to adjust transparency for all rooms in the selected category.
 3. Select **Straight edge** and click around a room's corners. Click your first point again, or press **Enter**, to close the shape. You need at least three distinct points enclosing an area.

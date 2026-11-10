@@ -6,6 +6,7 @@ colors:
   green-dark: "#1c4e41"
   green-light: "#e6eee7"
   paper: "#ffffff"
+  on-accent: "#ffffff"
   surface: "#fbfaf7"
   canvas: "#eaece7"
   ink: "#293a32"
@@ -65,7 +66,7 @@ spacing:
 components:
   button-primary:
     backgroundColor: "{colors.green}"
-    textColor: "{colors.paper}"
+    textColor: "{colors.on-accent}"
     typography: "{typography.label}"
     rounded: "{rounded.control}"
     padding: "10px 15px"
@@ -156,6 +157,14 @@ The palette combines forest-green actions, warm off-white panels and a desaturat
 **The Content Colour Rule.** Room category colours and opacity are editable document content. Do not promote demo category colours into application state tokens or use the user's current category colour for focus, errors or tool selection.
 
 **The State Contrast Rule.** Active controls use green text and a pale green surface; selection on the plan adds the fixed `selection-stroke`. White vertex handles and gold `curve-handle` controls distinguish corner editing from curve editing. Destructive actions use `danger` and explicit text or icons.
+
+### Interface themes
+
+The header theme control offers **System**, **Light** and **Dark**. System is the default and follows live changes to `prefers-color-scheme`. An explicit choice is stored under `pdf-overlayer.theme` when browser storage is available and synchronised across tabs. The initial HTML resolves the theme before the app loads; `src/theme.ts` maintains it after mounting.
+
+The frontmatter describes the light palette. `:root[data-theme='dark']` in `src/styles.css` remaps the interface's semantic tokens to a forest-tinted dark palette: surface `#202923`, canvas `#141c18`, ink `#e5ece6`, muted ink `#b0beb4`, action fill `#8bc8ac` and action text `#142d22`. Use `--on-accent` for primary-action text instead of coupling it to document white. Fields, selection, notices, errors, keyboard hints, scrollbars and temporary surfaces have explicit theme roles. The sidecar records both palettes under `extensions.themes`.
+
+**The White Document Rule.** `--paper` stays `#ffffff` in both themes. The PDF canvas, SVG room fills, editing handles, on-page legend and export colours retain their document values. Do not invert, tint or filter the PDF to implement dark mode. `.paper` retains the light native colour scheme. Only the interface and space around the plan change appearance.
 
 ## Typography
 

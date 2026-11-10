@@ -12,6 +12,8 @@ Run `npm ci` to install the locked dependencies, then `npm start` to launch the 
 
 ## Checks
 
+Theme logic is in `src/theme.ts`, with a small pre-load initialiser in `index.html` to prevent a light flash. Keep their storage key and theme resolution consistent. The interface palette is defined by the light and dark semantic tokens in `src/styles.css`; document colours and the white PDF page are independent of the interface theme. Theme preference is a browser setting, separate from saved PDF projects.
+
 Run these commands from the project folder after installing the dependencies:
 
 ```sh

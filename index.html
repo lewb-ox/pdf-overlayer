@@ -4,6 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#f6f5f1" />
+    <script>
+      // Resolve the theme before the app loads to avoid a light flash in dark mode.
+      (() => {
+        let preference = 'system';
+        try {
+          const saved = localStorage.getItem('pdf-overlayer.theme');
+          if (saved === 'light' || saved === 'dark') preference = saved;
+        } catch { /* Storage can be unavailable in private or restricted browsers. */ }
+        const theme = preference === 'system' ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : preference;
+        document.documentElement.dataset.theme = theme;
+        document.documentElement.style.colorScheme = theme;
+        document.querySelector('meta[name="theme-color"]').setAttribute('content', theme === 'dark' ? '#171e1b' : '#f6f5f1');
+      })();
+    </script>
     <meta name="description" content="Colour rooms on PDF plans with precise, closed overlays. Create a labelled legend and export at the original scale, privately in your browser." />
     <title>PDF Overlayer — Room by room.</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />

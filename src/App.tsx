@@ -3,6 +3,7 @@ import { PDFDocument } from 'pdf-lib';
 import type { PDFDocumentProxy } from 'pdfjs-dist';
 import { ArrowDownToLine, ArrowLeft, ArrowRight, Check, ChevronDown, CircleHelp, Eye, EyeOff, FileText, FolderOpen, Hand, Layers2, LoaderCircle, Maximize, Menu, Minus, MousePointer2, PanelLeftClose, Pencil, Plus, Redo2, Save, ShieldCheck, Spline, Trash2, Undo2, Upload, VectorSquare, X } from 'lucide-react';
 import { PlanCanvas } from './PlanCanvas';
+import { ThemeControl } from './ThemeControl';
 import { base64ToBytes, bytesToBase64, createDemo, demoState, download, exportPdf, openDocument } from './pdf';
 import { emptyState, getLegend, uid, validShape, validateProject, type Category, type EditorState, type Overlay, type PageInfo, type Point, type ProjectFile, type Tool, type Vertex } from './model';
 
@@ -228,7 +229,7 @@ export function App() {
     <header className="app-header">
       <div className="brand"><span className="brand-mark"><Layers2 size={22} strokeWidth={1.5}/></span><span>PDF <strong>Overlayer</strong><small>Room by room.</small></span></div>
       <div className="document-name"><FileText size={15}/><span>{filename || 'No plan open'}</span>{dirty && <span className="unsaved-dot" title="Unsaved changes" aria-label="Unsaved changes"/>}</div>
-      <div className="header-actions"><button className="secondary-button open-button" onClick={() => fileRef.current?.click()} disabled={loading}><FolderOpen size={16}/><span>Open PDF</span></button>
+      <div className="header-actions"><ThemeControl/><button className="secondary-button open-button" onClick={() => fileRef.current?.click()} disabled={loading}><FolderOpen size={16}/><span>Open PDF</span></button>
         <IconButton label="Save editable project (⌘/Ctrl S)" onClick={saveProject} disabled={!source || loading || draft.length > 0}><Save size={17}/></IconButton>
         <button className="primary-button export-button" onClick={() => void exportPlan()} disabled={!source || loading || draft.length > 0}>{busy === 'Exporting PDF' ? <LoaderCircle size={16} className="spin"/> : <ArrowDownToLine size={16}/>}<span>{busy === 'Exporting PDF' ? 'Exporting…' : 'Export PDF'}</span></button>
       </div>
