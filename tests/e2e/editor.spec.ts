@@ -91,7 +91,7 @@ test('draws mixed straight and curved edges, closes paths, edits nodes and resto
 });
 
 test('edits colour categories and opacity, moves the legend and excludes hidden rooms from the legend', async ({ page }) => {
-  await page.getByRole('button', { name: 'Edit Teaching label', exact: true }).click();
+  await page.getByRole('button', { name: 'Edit AV1 label', exact: true }).click();
   await page.getByLabel('Category label', { exact: true }).fill('Teaching & learning');
   await page.getByLabel('Category label', { exact: true }).press('Enter');
   await page.getByLabel('Teaching & learning colour', { exact: true }).fill('#2277bb');
@@ -180,13 +180,13 @@ test('exports every page at source dimensions and aligns overlays on cropped pag
     return results;
   }, Array.from(output));
   for (const [i, sample] of samples.entries()) {
-    // Teaching green at 30% over white: (57,155,136)*0.3 + 255*0.7.
+    // AV1 green at 30% over white: (57,155,136)*0.3 + 255*0.7.
     expect(sample.pixel[0]).toBeGreaterThan(190); expect(sample.pixel[0]).toBeLessThan(202);
     expect(sample.pixel[1]).toBeGreaterThan(220); expect(sample.pixel[1]).toBeLessThan(231);
     expect(sample.pixel[2]).toBeGreaterThan(214); expect(sample.pixel[2]).toBeLessThan(225);
     expect(sample.text).toContain(`REFERENCE PAGE ${i * 90}`);
     expect(sample.text).toContain('ROOM COLOUR KEY');
-    expect(sample.text).toContain('Teaching');
+    expect(sample.text).toContain('AV1');
   }
 });
 

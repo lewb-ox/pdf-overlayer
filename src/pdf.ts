@@ -3,7 +3,7 @@ import fontkit from '@pdf-lib/fontkit';
 import fontUrl from '@fontsource/dm-sans/files/dm-sans-latin-400-normal.woff?url';
 import { getDocument, GlobalWorkerOptions, type PDFDocumentProxy } from 'pdfjs-dist';
 import workerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
-import { getLegend, inverseMatrix, legendLayout, pageCategories, pathData, transformPoint, type EditorState, type Matrix, type PageInfo, type Point } from './model';
+import { INITIAL_CATEGORIES, getLegend, inverseMatrix, legendLayout, pageCategories, pathData, transformPoint, type EditorState, type Matrix, type PageInfo, type Point } from './model';
 
 GlobalWorkerOptions.workerSrc = workerUrl;
 
@@ -161,12 +161,7 @@ export async function createDemo(): Promise<Uint8Array> {
 
 export function demoState(): EditorState {
   return {
-    categories: [
-      { id: 'teaching', label: 'Teaching', color: '#399B88', opacity: 0.3 },
-      { id: 'meeting', label: 'Meeting', color: '#DBA24C', opacity: 0.3 },
-      { id: 'support', label: 'Support', color: '#708EC9', opacity: 0.3 },
-      { id: 'circulation', label: 'Circulation', color: '#BC7A99', opacity: 0.3 },
-    ],
+    categories: structuredClone(INITIAL_CATEGORIES),
     overlays: [
       { id: 'sample-1', page: 0, name: 'Seminar room', categoryId: 'teaching', vertices: [{ x: 92, y: 192 }, { x: 358, y: 192 }, { x: 358, y: 363 }, { x: 92, y: 363 }] },
       { id: 'sample-2', page: 0, name: 'Meeting room', categoryId: 'meeting', vertices: [{ x: 652, y: 192 }, { x: 888, y: 192 }, { x: 888, y: 363 }, { x: 652, y: 363 }] },

@@ -24,10 +24,10 @@ export interface PageInfo {
 export type Tool = 'select' | 'line' | 'curve' | 'hand';
 
 export const INITIAL_CATEGORIES: Category[] = [
-  { id: 'teaching', label: 'Teaching', color: '#399B88', opacity: 0.3 },
-  { id: 'meeting', label: 'Meeting', color: '#DBA24C', opacity: 0.3 },
-  { id: 'support', label: 'Support', color: '#708EC9', opacity: 0.3 },
-  { id: 'circulation', label: 'Circulation', color: '#BC7A99', opacity: 0.3 },
+  { id: 'teaching', label: 'AV1', color: '#399B88', opacity: 0.3 },
+  { id: 'meeting', label: 'AV2', color: '#DBA24C', opacity: 0.3 },
+  { id: 'support', label: 'AV3', color: '#708EC9', opacity: 0.3 },
+  { id: 'circulation', label: 'AV4', color: '#BC7A99', opacity: 0.3 },
 ];
 export const emptyState = (): EditorState => ({
   categories: structuredClone(INITIAL_CATEGORIES), overlays: [], legends: {},
