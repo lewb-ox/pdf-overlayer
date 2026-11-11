@@ -139,7 +139,7 @@ export function PlanCanvas(props: Props) {
   } else if (pointer && draft.length) ghost.push(pointer);
 
   return <div className={`canvas-scroll tool-${tool}`} ref={scrollRef} aria-label="PDF plan workspace">
-    {!info ? <div className="empty-workspace"><Layers size={34}/><h2>Your plan, clearly marked.</h2><p>Open a PDF to start colouring rooms.</p><button className="primary-button" onClick={props.onOpen}><Upload size={16}/> Open PDF</button></div> :
+    {!info ? <div className="empty-workspace"><Layers size={34}/><h2>Your plan, clearly marked.</h2><p>Open a PDF to start colouring rooms, or a saved project to continue editing.</p><button className="primary-button" onClick={props.onOpen}><Upload size={16}/> Open PDF / project</button></div> :
       <div className="paper-stage" style={{ width: Math.max(bounds.width, info.width * scale + 84), height: Math.max(bounds.height, info.height * scale + 84) }}>
         <div className="paper" style={{ width: info.width * scale, height: info.height * scale }}>
           <canvas ref={canvasRef} aria-label={`Original PDF, page ${page + 1}`} />

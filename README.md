@@ -90,7 +90,7 @@ To use the tool again:
 1. Open a terminal in the same project folder, as described in step 3 above.
 2. Run `npm start`.
 3. Open the **Local** address in your browser.
-4. If you saved an editable project previously, use **Open PDF** to load it.
+4. If you saved an editable project previously, use **Open PDF / project** to load it.
 
 To stop, save your project, return to the terminal and press **Ctrl+C**. On Windows, confirm if asked to terminate the batch job. You can then close the terminal and browser tab.
 
@@ -100,7 +100,7 @@ To stop, save your project, return to the terminal and press **Ctrl+C**. On Wind
 
 Use the theme control in the header to choose **System**, **Light** or **Dark**. **System** is the default and follows your computer's appearance setting as it changes. Your choice is remembered in this browser when browser storage is available. The PDF page stays white in every theme, and the theme does not change exported PDFs.
 
-1. Select **Open PDF** and choose your plan. You can also drag a PDF into the editor.
+1. Select **Open PDF / project** and choose your plan. You can also drag a PDF into the editor.
 2. Choose a category in the **Colour key**. Click a colour swatch to change its colour, the pencil to edit its label, or **+** to add a category. Use **Opacity** to adjust transparency for all rooms in the selected category.
 3. Select **Straight edge** and click around a room's corners. Click your first point again, or press **Enter**, to close the shape. You need at least three distinct points enclosing an area.
 4. For a curved edge, select **Curved edge**, click the curve's endpoint, then click to place its bend. You can switch between straight and curved tools within one room. To curve the closing edge, click the first point and then place the bend.
@@ -116,7 +116,7 @@ There are two ways to save, depending on what you need:
 
 | Action | What you receive | When to use it |
 | --- | --- | --- |
-| **Save editable project** — the save icon beside Open PDF | An `.overlayer.json` file containing your original PDF, room shapes, colours and legend settings | To continue editing later. Reopen it using **Open PDF**. |
+| **Save editable project** — the save icon beside Open PDF / project | An `.overlayer.json` file containing your original PDF, room shapes, colours and legend settings | To continue editing later. Reopen it using **Open PDF / project**. |
 | **Export PDF** | A PDF containing your original plan, visible room colours and legends | To share, view or print the finished plan. Keep an editable project too if you may need to revise it. |
 
 Files are downloaded through your browser, normally to your Downloads folder unless you choose another location. Saving does not overwrite the original plan. Hidden rooms are excluded from the exported PDF and its legends.

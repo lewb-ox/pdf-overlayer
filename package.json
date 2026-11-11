@@ -1,7 +1,7 @@
 {
   "name": "pdf-overlayer",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.1.2",
   "type": "module",
   "scripts": {
     "start": "vite --host 127.0.0.1",
@@ -28,19 +28,33 @@
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
     "@vitejs/plugin-react": "^5.1.0",
+    "electron": "^39.8.10",
+    "electron-builder": "^26.18.0",
     "typescript": "~5.9.3",
     "vite": "^7.2.2",
-    "vitest": "^4.0.8",
-    "electron": "^39.2.0",
-    "electron-builder": "^26.0.12"
+    "vitest": "^4.0.8"
   },
   "main": "desktop/main.cjs",
   "build": {
     "appId": "uk.ac.ox.pdf-overlayer",
     "productName": "PDF Overlayer",
-    "directories": { "output": "release" },
-    "files": ["dist/**/*", "desktop/**/*", "package.json"],
-    "mac": { "target": ["dmg", "zip"], "category": "public.app-category.productivity" },
-    "dmg": { "title": "PDF Overlayer" }
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "desktop/**/*",
+      "package.json"
+    ],
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "category": "public.app-category.productivity"
+    },
+    "dmg": {
+      "title": "PDF Overlayer"
+    }
   }
 }

@@ -2,8 +2,10 @@ import { PDFDocument, StandardFonts, rgb, degrees, BlendMode } from 'pdf-lib';
 import fontkit from '@pdf-lib/fontkit';
 import fontUrl from '@fontsource/dm-sans/files/dm-sans-latin-400-normal.woff?url';
 import boldFontUrl from '@fontsource/dm-sans/files/dm-sans-latin-600-normal.woff?url';
-import { getDocument, GlobalWorkerOptions, type PDFDocumentProxy } from 'pdfjs-dist';
-import workerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
+// Electron's bundled Chromium can lag the APIs required by the modern build.
+// Use PDF.js's supported compatibility build in both renderer and worker.
+import { getDocument, GlobalWorkerOptions, type PDFDocumentProxy } from 'pdfjs-dist/legacy/build/pdf.mjs';
+import workerUrl from 'pdfjs-dist/legacy/build/pdf.worker.min.mjs?url';
 import { INITIAL_CATEGORIES, defaultLegendTitle, getLegend, inverseMatrix, legendLayout, pathData, roomMarkerPosition, roomNumbers, transformPoint, type EditorState, type Matrix, type PageInfo, type Point } from './model';
 
 GlobalWorkerOptions.workerSrc = workerUrl;
