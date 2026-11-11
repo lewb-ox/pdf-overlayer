@@ -33,3 +33,9 @@ The browser tests require an installed Google Chrome. Their configuration is in 
 For a subpath deployment, set Vite's `base` before building.
 
 `npm run preview` serves a local preview of an existing build; it is not a production hosting service.
+
+## macOS desktop packaging
+
+Install dependencies with `npm ci`, then run `npm run desktop:dist` on macOS. electron-builder writes an unsigned `.dmg` and `.zip` to `release/`. The build does not require an Apple Developer account. Build separate artifacts on Apple Silicon and Intel Macs, or configure a universal build after checking all native dependencies. Distribute the DMG and publish a checksum through a trusted release channel. Users must approve the unsigned app once through Finder's Control-click → Open flow or Privacy & Security settings. Signing/notarization requires an Apple Developer account and is not configured here.
+
+The Electron window disables Node integration, enables context isolation and sandboxing, and loads the built local Vite app. Do not add arbitrary remote navigation or enable Node integration for web content.

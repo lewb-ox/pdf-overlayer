@@ -4,6 +4,12 @@ Mark rooms on a PDF floor plan with transparent colours, add a labelled legend, 
 
 The tool runs on your computer in a web browser. Your PDFs are processed in the browser and are not uploaded to a service. There is no account to create.
 
+## macOS app (no Terminal required)
+
+Download the PDF Overlayer `.dmg` supplied with the release, open it, and drag **PDF Overlayer** to **Applications**. The app is unsigned because it is distributed without an Apple Developer account, so macOS may block the first launch. In Finder, Control-click the app in Applications, choose **Open**, then choose **Open** again in the prompt. If that option is unavailable, open **System Settings → Privacy & Security**, scroll to the security message for PDF Overlayer, and choose **Open Anyway**. You only need to approve the first launch. Only do this for an app obtained from a source you trust.
+
+The app runs locally. PDFs are processed on your Mac and are not uploaded. An Apple Developer account would be needed for Developer ID signing and notarization, which removes this first-launch warning.
+
 ## Before you start
 
 You will need:
@@ -12,7 +18,7 @@ You will need:
 - An up-to-date desktop web browser, such as Chrome or Edge.
 - **Node.js and npm**, installed using the instructions below. These run the tool on your computer.
 
-This version is supplied as a project folder rather than a desktop installer. You will use a terminal to start it; you do not need to edit any code or install Git.
+If you are using the source project rather than a packaged macOS app, follow the terminal setup below.
 
 ## First-time setup
 
