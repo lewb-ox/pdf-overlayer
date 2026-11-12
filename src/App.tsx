@@ -188,7 +188,8 @@ export function App() {
     setBusy('Exporting PDF'); setError(null);
     try {
       const bytes = await exportPdf(source, state, pages, filename);
-      download(bytes, filename.replace(/\.pdf$/i, '').replace('Example · ', '') + '-overlays.pdf', 'application/pdf');
+      const exportName = filename.replace(/\.pdf$/i, '').replace('Example · ', '').replace(/-overlays$/i, '') || 'Plan overlay';
+      download(bytes, `${exportName}-overlays.pdf`, 'application/pdf');
       setNotice('PDF exported at the original page dimensions. Print at Actual size / 100% to retain the scale.');
     } catch (e) { setError(e instanceof Error ? e.message : 'Export failed. Please try again.'); }
     finally { setBusy(null); }
